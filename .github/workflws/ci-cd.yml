@@ -5,6 +5,11 @@ on:
     branches: [ "main" ]
     paths:
       - "apps/user-service/**"
+  pull_request:
+    types: [ closed ]
+    branches: [ "main" ]
+    paths:
+      - "apps/user-service/**"
 
 jobs:
   security-and-tests:
