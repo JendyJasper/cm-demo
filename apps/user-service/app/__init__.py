@@ -1,0 +1,1 @@
+# Makes 'app' a package so it can be imported in tests.
