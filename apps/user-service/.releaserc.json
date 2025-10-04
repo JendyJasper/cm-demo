@@ -6,16 +6,13 @@
     [
       "@semantic-release/commit-analyzer",
       {
-        "preset": "angular",
-        "releaseRules": [
-          { "type": "docs", "scope": "README", "release": "patch" }
-        ]
+        "preset": "conventionalcommits"
       }
     ],
     [
       "@semantic-release/release-notes-generator",
       {
-        "preset": "angular"
+        "preset": "conventionalcommits"
       }
     ],
     [
