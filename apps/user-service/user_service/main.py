@@ -64,6 +64,7 @@ async def root():
         "status": "running"
     }
 
+
 @app.get("/startup")
 async def startup_probe():
     """Startup probe - checks if app finished initialization"""

@@ -24,16 +24,18 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install -r app/requirements.txt
+        run: pip install -r user_service/requirements.txt
 
       - name: Run Unit Tests
-        run: pytest -v tests/
+        run: PYTHONPATH=. pytest -v tests/
+        env:
+          PYTHONPATH: "${{ github.workspace }}/apps/user-service"
 
       - name: Bandit (static code security scan)
         uses: tj-actions/bandit@v5
         with:
           targets: |
-            app
+            user_service
           options: "-r"
 
       - name: Safety (dependency vulnerability scan)
