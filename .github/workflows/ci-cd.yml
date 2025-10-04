@@ -34,8 +34,6 @@ jobs:
       - name: Bandit (static code security scan)
         uses: tj-actions/bandit@v5
         with:
-          targets: |
-            user_service
           options: "-r"
 
       - name: Safety (dependency vulnerability scan)
