@@ -42,6 +42,7 @@ jobs:
         uses: pyupio/safety-action@v1
         with:
           args: check --full-report
+          api-key: ${{ secrets.SAFETY_API_KEY }}
 
   release-and-docker:
     name: Semantic Release & Docker Build/Push
