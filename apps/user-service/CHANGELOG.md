@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/JendyJasper/cm-demo/compare/user-service-v1.0.1...user-service-v1.0.2) (2025-10-04)
+
+
+### Bug Fixes
+
+* solve semvar issue ([f801f33](https://github.com/JendyJasper/cm-demo/commit/f801f33e8768afcf92dcb5067a3b8628376da0eb))
+
 ## [1.0.1](https://github.com/JendyJasper/cm-demo/compare/user-service-v1.0.0...user-service-v1.0.1) (2025-10-04)
 
 
