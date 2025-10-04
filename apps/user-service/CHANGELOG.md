@@ -1,3 +1,23 @@
+## [2.0.0](https://github.com/JendyJasper/cm-demo/compare/user-service-v1.0.2...user-service-v2.0.0) (2025-10-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* Update package.json
+* Update package.json
+* Update .releaserc.json
+* Update ci-cd.yml
+* Update package.json
+
+### Bug Fixes
+
+* Update .releaserc.json ([689c236](https://github.com/JendyJasper/cm-demo/commit/689c236d59cf33b626468361bf2ae3365f50ce72))
+* Update .releaserc.json ([68f54c1](https://github.com/JendyJasper/cm-demo/commit/68f54c1ad4e08e8c54fe1102c954b582963f9bde))
+* Update ci-cd.yml ([cb8307b](https://github.com/JendyJasper/cm-demo/commit/cb8307b4b0c52712fbf6666c210ded1855ab4abf))
+* Update package.json ([2c22316](https://github.com/JendyJasper/cm-demo/commit/2c22316224828adb0a5c00f9359c8c6efda0280b))
+* Update package.json ([7cd25da](https://github.com/JendyJasper/cm-demo/commit/7cd25da2addf37178a70f2e5a247cfc3fd37db03))
+* Update package.json ([3e61640](https://github.com/JendyJasper/cm-demo/commit/3e6164082a6cd2946681401c5cd993b3851102fd))
+
 ## [1.0.2](https://github.com/JendyJasper/cm-demo/compare/user-service-v1.0.1...user-service-v1.0.2) (2025-10-04)
 
 
