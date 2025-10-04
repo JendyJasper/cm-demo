@@ -1,0 +1,36 @@
+{
+  "branches": ["main"],
+  "repositoryUrl": "https://github.com/JendyJasper/cm-demo.git",
+  "tagFormat": "user-service-v${version}",
+  "plugins": [
+    [
+      "@semantic-release/commit-analyzer",
+      {
+        "preset": "conventionalcommits",
+        "releaseRules": [
+          { "type": "docs", "scope": "README", "release": "patch" }
+        ]
+      }
+    ],
+    [
+      "@semantic-release/release-notes-generator",
+      {
+        "preset": "conventionalcommits"
+      }
+    ],
+    [
+      "@semantic-release/changelog",
+      {
+        "changelogFile": "CHANGELOG.md"
+      }
+    ],
+    "@semantic-release/github",
+    [
+      "@semantic-release/git",
+      {
+        "assets": ["CHANGELOG.md", "package.json"],
+        "message": "chore(release): user-service ${nextRelease.version} [skip ci]"
+      }
+    ]
+  ]
+}
