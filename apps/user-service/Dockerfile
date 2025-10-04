@@ -8,7 +8,7 @@ FROM python:3.11-slim
 RUN groupadd -r app && useradd -r -g app app
 WORKDIR /app
 COPY --from=builder /root/.local /home/app/.local
-COPY app/ .
+COPY . .
 ENV PATH="/home/app/.local/bin:$PATH"
 USER app
 EXPOSE 8000
