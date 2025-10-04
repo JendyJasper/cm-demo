@@ -105,4 +105,3 @@ async def get_user(user_id: int):
     if user_id < 1 or user_id > len(users_db):
         raise HTTPException(status_code=404, detail="User not found")
     return users_db[user_id - 1]
-
