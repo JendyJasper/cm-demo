@@ -57,6 +57,10 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Install semantic-release dependencies
+        run: npm install
+        working-directory: apps/user-service
+
       - name: Semantic-Release
         id: release
         uses: cycjimmy/semantic-release-action@v4
