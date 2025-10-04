@@ -1,0 +1,81 @@
+name: User-service CI-CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "apps/user-service/**"
+
+jobs:
+  security-and-tests:
+    name: Run Tests & Security Scans
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/user-service
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Unit Tests
+        run: pytest -v
+
+      - name: Bandit (static code security scan)
+        uses: tj-actions/bandit@v5
+        with:
+          targets: |
+            app
+          options: "-r"
+
+      - name: Safety (dependency vulnerability scan)
+        uses: pyupio/safety-action@v1
+        with:
+          args: check --full-report
+
+  release-and-docker:
+    name: Semantic Release & Docker Build/Push
+    runs-on: ubuntu-latest
+    needs: security-and-tests
+    defaults:
+      run:
+        working-directory: apps/user-service
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Semantic-Release
+        id: release
+        uses: cycjimmy/semantic-release-action@v4
+        with:
+          semantic_version: 23
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Log in to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build & push images
+        if: steps.release.outputs.new_release_published == 'true'
+        run: |
+          IMAGE_NAME=${{ secrets.DOCKERHUB_USERNAME }}/user-service
+          SHA_TAG=${GITHUB_SHA::7}
+          VERSION_TAG=${{ steps.release.outputs.new_release_version }}
+          docker build -t $IMAGE_NAME:$SHA_TAG -t $IMAGE_NAME:$VERSION_TAG .
+          docker push $IMAGE_NAME:$SHA_TAG
+          docker push $IMAGE_NAME:$VERSION_TAG

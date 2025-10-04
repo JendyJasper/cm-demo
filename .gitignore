@@ -1,0 +1,27 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+*/venv/
+.venv/
+*/.venv/
+
+# Pytest cache 
+.pytest_cache/
+*/.pytest_cache/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# IDE & editor stuff
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
