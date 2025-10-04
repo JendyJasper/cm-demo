@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/JendyJasper/cm-demo/compare/user-service-v1.0.0...user-service-v1.0.1) (2025-10-04)
+
+
+### Bug Fixes
+
+* Update Dockerfile path ([e15c65f](https://github.com/JendyJasper/cm-demo/commit/e15c65f9f88d145084cd8411cd4ddce78d3adfcd))
+
 # 1.0.0 (2025-10-04)
 
 
