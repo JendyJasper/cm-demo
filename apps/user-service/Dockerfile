@@ -9,8 +9,8 @@ FROM python:3.11-slim
 RUN groupadd -r app && useradd -r -g app app
 WORKDIR /app
 
-COPY --from=builder /root/.local /home/app/.local
-COPY user_service/ .
+COPY --from=builder --chown=app:app /root/.local /home/app/.local
+COPY --chown=app:app user_service/ .
 
 ENV PATH="/home/app/.local/bin:$PATH"
 
