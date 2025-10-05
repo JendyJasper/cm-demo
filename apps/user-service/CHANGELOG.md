@@ -1,3 +1,10 @@
+## [5.0.1](https://github.com/JendyJasper/cm-demo/compare/user-service-v5.0.0...user-service-v5.0.1) (2025-10-05)
+
+
+### Bug Fixes
+
+* update Dockerfile COPY paths for project structure ([af6fb34](https://github.com/JendyJasper/cm-demo/commit/af6fb34640ad1b16e886ac0111dd8d6b361da827))
+
 ## [5.0.0](https://github.com/JendyJasper/cm-demo/compare/user-service-v4.0.0...user-service-v5.0.0) (2025-10-05)
 
 
