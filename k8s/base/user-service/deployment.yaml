@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: user-service
-        image: your-dockerhub-username/user-service:latest
+        image: jendyjasper/user-service:3.0.0
         imagePullPolicy: Always
         ports:
         - containerPort: 8000
