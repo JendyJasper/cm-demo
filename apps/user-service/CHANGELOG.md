@@ -1,3 +1,14 @@
+## [3.0.0](https://github.com/JendyJasper/cm-demo/compare/user-service-v2.0.0...user-service-v3.0.0) (2025-10-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* update db credentials
+
+### Features
+
+* update db credentials ([f306566](https://github.com/JendyJasper/cm-demo/commit/f306566d3c907a27195bf15001ea7af23634df5d))
+
 ## [2.0.0](https://github.com/JendyJasper/cm-demo/compare/user-service-v1.0.2...user-service-v2.0.0) (2025-10-04)
 
 
