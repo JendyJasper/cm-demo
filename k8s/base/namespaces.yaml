@@ -13,6 +13,15 @@ metadata:
   labels:
     name: user-service
     environment: base
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: monitoring
+  labels:
+    name: monitoring
+    environment: base
 ---
 apiVersion: v1
 kind: Namespace
