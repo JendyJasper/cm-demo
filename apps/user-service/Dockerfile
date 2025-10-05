@@ -1,18 +1,18 @@
 FROM python:3.11-slim as builder
 
 WORKDIR /app
-COPY requirements.txt .
+COPY apps/user-service/requirements.txt .
 RUN pip install --user --no-cache-dir -r requirements.txt
 
 FROM python:3.11-slim
 
-RUN groupadd -r app && useradd -r -g app app
 WORKDIR /app
 
-COPY --from=builder --chown=app:app /root/.local /home/app/.local
-COPY --chown=app:app user_service/ .
+COPY --from=builder /root/.local /usr/local
+COPY apps/user-service/user_service/ .
 
-ENV PATH="/home/app/.local/bin:$PATH"
+RUN groupadd -r app && useradd -r -g app app
+RUN chmod -R a+r /usr/local && find /usr/local -type d -exec chmod a+x {} \;
 
 USER app
 EXPOSE 8000
