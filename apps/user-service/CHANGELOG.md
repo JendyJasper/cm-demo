@@ -1,3 +1,16 @@
+## [4.0.0](https://github.com/JendyJasper/cm-demo/compare/user-service-v3.0.0...user-service-v4.0.0) (2025-10-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* fix dockerfile and set-up user service
+* fix dockerfile and set-up user service"
+
+### Bug Fixes
+
+* fix dockerfile and set-up user service ([bebad6f](https://github.com/JendyJasper/cm-demo/commit/bebad6f70efbe2b221ef085a9b4ed3917bbe8088))
+* fix dockerfile and set-up user service" ([9395bba](https://github.com/JendyJasper/cm-demo/commit/9395bba0cd000ea2baaf59982a5bc58485422b54))
+
 ## [3.0.0](https://github.com/JendyJasper/cm-demo/compare/user-service-v2.0.0...user-service-v3.0.0) (2025-10-05)
 
 
