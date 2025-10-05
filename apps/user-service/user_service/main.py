@@ -16,22 +16,32 @@ startup_complete = False
 async def connect_to_db():
     global pool, startup_complete
     try:
+        # Get database connection details from environment
+        db_user = os.getenv("DATABASE_USER", "postgres")
+        db_password = os.getenv("DATABASE_PASSWORD", "postgres")
+        db_host = os.getenv("DATABASE_HOST", "localhost")
+        db_port = os.getenv("DATABASE_PORT", "5432")
+        db_name = os.getenv("DATABASE_NAME", "user_service")
+        
+        # Construct DATABASE_URL
+        database_url = f"postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"
+        
         pool = await asyncpg.create_pool(
-            os.getenv("DATABASE_URL", "postgresql://user:pass@localhost/users"),
+            database_url,
             min_size=5,
             max_size=20
         )
-        logger.info(" Connected to database")
+        logger.info("✅ Connected to database")
         startup_complete = True
     except Exception as e:
-        logger.error(f" Database connection failed: {e}")
+        logger.error(f"❌ Database connection failed: {e}")
         startup_complete = False
 
 async def close_db_connection():
     global pool
     if pool:
         await pool.close()
-        logger.info(" Database connection closed")
+        logger.info("✅ Database connection closed")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -64,7 +74,6 @@ async def root():
         "status": "running"
     }
 
-
 @app.get("/startup")
 async def startup_probe():
     """Startup probe - checks if app finished initialization"""
@@ -79,13 +88,14 @@ async def health_check():
 
 @app.get("/ready")
 async def readiness_check():
-    """Readiness probe - check DB + Kafka"""
+    """Readiness probe - check DB connection"""
     try:
         if pool:
             async with pool.acquire() as conn:
                 await conn.execute("SELECT 1")
-        # Future: add Kafka connection check
-        return {"status": "ready", "database": "connected", "kafka": "connected"}
+            return {"status": "ready", "database": "connected"}
+        else:
+            raise HTTPException(status_code=503, detail="Database not connected")
     except Exception as e:
         logger.error(f"Readiness check failed: {e}")
         raise HTTPException(status_code=503, detail="Service not ready")
@@ -97,8 +107,6 @@ async def get_users():
 @app.post("/users")
 async def create_user(user: User):
     users_db.append(user.dict())
-    # Future: Publish event to Kafka topic
-    # await kafka_producer.send("user-created", user.dict())
     return {"message": "User created", "user": user.dict()}
 
 @app.get("/users/{user_id}")
