@@ -1,3 +1,10 @@
+## [5.1.0](https://github.com/JendyJasper/cm-demo/compare/user-service-v5.0.2...user-service-v5.1.0) (2025-10-05)
+
+
+### Features
+
+* integrate PostgreSQL for user data persistence ([4663015](https://github.com/JendyJasper/cm-demo/commit/466301577f7caa51af6aa0d80f37b88a871e9831))
+
 ## [5.0.2](https://github.com/JendyJasper/cm-demo/compare/user-service-v5.0.1...user-service-v5.0.2) (2025-10-05)
 
 
