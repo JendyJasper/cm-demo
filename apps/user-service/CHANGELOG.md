@@ -1,3 +1,14 @@
+## [5.0.0](https://github.com/JendyJasper/cm-demo/compare/user-service-v4.0.0...user-service-v5.0.0) (2025-10-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* fix dockerfile copy permission issue
+
+### Bug Fixes
+
+* fix dockerfile copy permission issue ([f61b528](https://github.com/JendyJasper/cm-demo/commit/f61b528023d3c406b137474700f7d17978908d14))
+
 ## [4.0.0](https://github.com/JendyJasper/cm-demo/compare/user-service-v3.0.0...user-service-v4.0.0) (2025-10-05)
 
 
