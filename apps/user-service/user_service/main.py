@@ -31,7 +31,19 @@ async def connect_to_db():
             min_size=5,
             max_size=20
         )
-        logger.info("✅ Connected to database")
+        
+        # Create users table if it doesn't exist
+        async with pool.acquire() as conn:
+            await conn.execute('''
+                CREATE TABLE IF NOT EXISTS users (
+                    id SERIAL PRIMARY KEY,
+                    username VARCHAR(50) UNIQUE NOT NULL,
+                    email VARCHAR(100) UNIQUE NOT NULL,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                )
+            ''')
+        
+        logger.info("✅ Connected to database and ensured table exists")
         startup_complete = True
     except Exception as e:
         logger.error(f"❌ Database connection failed: {e}")
@@ -63,8 +75,9 @@ class User(BaseModel):
     username: str
     email: str
 
-# In-memory storage (temporary)
-users_db = []
+class UserInDB(User):
+    id: int
+    created_at: str
 
 @app.get("/")
 async def root():
@@ -102,15 +115,53 @@ async def readiness_check():
 
 @app.get("/users")
 async def get_users():
-    return {"users": users_db}
+    """Get all users from database"""
+    if not pool:
+        raise HTTPException(status_code=503, detail="Database not connected")
+    
+    try:
+        async with pool.acquire() as conn:
+            users = await conn.fetch("SELECT id, username, email, created_at FROM users ORDER BY id")
+            return {"users": [dict(user) for user in users]}
+    except Exception as e:
+        logger.error(f"Failed to fetch users: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch users")
 
 @app.post("/users")
 async def create_user(user: User):
-    users_db.append(user.dict())
-    return {"message": "User created", "user": user.dict()}
+    """Create a new user in database"""
+    if not pool:
+        raise HTTPException(status_code=503, detail="Database not connected")
+    
+    try:
+        async with pool.acquire() as conn:
+            # Insert user and return the created record
+            result = await conn.fetchrow(
+                "INSERT INTO users (username, email) VALUES ($1, $2) RETURNING id, username, email, created_at",
+                user.username, user.email
+            )
+            return {"message": "User created", "user": dict(result)}
+    except asyncpg.exceptions.UniqueViolationError:
+        raise HTTPException(status_code=400, detail="Username or email already exists")
+    except Exception as e:
+        logger.error(f"Failed to create user: {e}")
+        raise HTTPException(status_code=500, detail="Failed to create user")
 
 @app.get("/users/{user_id}")
 async def get_user(user_id: int):
-    if user_id < 1 or user_id > len(users_db):
-        raise HTTPException(status_code=404, detail="User not found")
-    return users_db[user_id - 1]
+    """Get a specific user by ID"""
+    if not pool:
+        raise HTTPException(status_code=503, detail="Database not connected")
+    
+    try:
+        async with pool.acquire() as conn:
+            user = await conn.fetchrow(
+                "SELECT id, username, email, created_at FROM users WHERE id = $1",
+                user_id
+            )
+            if not user:
+                raise HTTPException(status_code=404, detail="User not found")
+            return dict(user)
+    except Exception as e:
+        logger.error(f"Failed to fetch user: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch user")
