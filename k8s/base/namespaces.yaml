@@ -38,3 +38,22 @@ metadata:
   labels:
     name: cert-manager
     environment: base
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: argocd
+  labels:
+    name: argocd
+    environment: base
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: argo-rollouts
+  labels:
+    name: argo-rollouts
+    environment: base
+    

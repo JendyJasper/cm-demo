@@ -8,3 +8,7 @@ resources:
   - user-service/
   - ingress/
   - cert-manager/
+  - ../../argocd/
+
+commonLabels:
+  app.kubernetes.io/part-of: user-platform
