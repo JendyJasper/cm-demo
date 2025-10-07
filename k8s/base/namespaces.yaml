@@ -6,22 +6,6 @@ metadata:
   labels:
     name: monitoring
     environment: base
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: ingress
-  labels:
-    name: ingress
-    environment: base
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: cert-manager
-  labels:
-    name: cert-manager
-    environment: base
 
 ---
 apiVersion: v1
