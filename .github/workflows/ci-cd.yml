@@ -101,15 +101,6 @@ jobs:
           images:
             - name: jendyjasper/user-service
               newTag: ${{ steps.release.outputs.new_release_version }}
-          
-          patches:
-            - target:
-                kind: Rollout
-                name: user-service
-              patch: |-
-                - op: replace
-                  path: /spec/template/spec/containers/0/env/6/value
-                  value: development
           EOF
 
       - name: Commit and push kustomize changes
