@@ -6,4 +6,4 @@ resources:
 
 images:
   - name: jendyjasper/user-service
-    newTag: 6.0.1
+    newTag: 6.1.0
