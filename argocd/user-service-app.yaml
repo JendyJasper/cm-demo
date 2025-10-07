@@ -3,14 +3,15 @@ kind: Application
 metadata:
   name: user-service
   namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
+  labels:
+    app: user-service
+    team: platform
 spec:
   project: default
   source:
     repoURL: https://github.com/JendyJasper/cm-demo.git
     targetRevision: HEAD
-    path: k8s/base
+    path: k8s/base/user-service
   destination:
     server: https://kubernetes.default.svc
     namespace: user-service
@@ -21,9 +22,9 @@ spec:
     syncOptions:
     - CreateNamespace=true
     - PruneLast=true
-    - ApplyOutOfSyncOnly=true
     - ServerSideApply=true
     - FailOnSharedResource=false
+    - ApplyOutOfSyncOnly=true
   ignoreDifferences:
   - group: argoproj.io
     kind: Rollout 
