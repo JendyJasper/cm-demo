@@ -1,3 +1,18 @@
+## [6.0.0](https://github.com/JendyJasper/cm-demo/compare/user-service-v5.1.0...user-service-v6.0.0) (2025-10-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove icons
+* remove icons
+* remove icons (#46)
+
+### Features
+
+* remove icons ([53e0269](https://github.com/JendyJasper/cm-demo/commit/53e0269f7b8f421adb085fe015c9822ce2d84d6f))
+* remove icons ([d03bc3c](https://github.com/JendyJasper/cm-demo/commit/d03bc3c61cfd72f93f57035c20f2b9f740cf3ca7))
+* remove icons ([#46](https://github.com/JendyJasper/cm-demo/issues/46)) ([c9639c6](https://github.com/JendyJasper/cm-demo/commit/c9639c66e45c536cbbeba1040f8a65b97f136637))
+
 ## [5.1.0](https://github.com/JendyJasper/cm-demo/compare/user-service-v5.0.2...user-service-v5.1.0) (2025-10-05)
 
 
