@@ -1,3 +1,10 @@
+## [6.1.0](https://github.com/JendyJasper/cm-demo/compare/user-service-v6.0.1...user-service-v6.1.0) (2025-10-07)
+
+
+### Features
+
+* remove env var ([7496102](https://github.com/JendyJasper/cm-demo/commit/74961025c7fe7fbb688c07cf8d3f9314e4992bdb))
+
 ## [6.0.1](https://github.com/JendyJasper/cm-demo/compare/user-service-v6.0.0...user-service-v6.0.1) (2025-10-07)
 
 
