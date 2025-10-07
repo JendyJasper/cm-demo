@@ -1,3 +1,10 @@
+## [6.0.1](https://github.com/JendyJasper/cm-demo/compare/user-service-v6.0.0...user-service-v6.0.1) (2025-10-07)
+
+
+### Bug Fixes
+
+* test kustomize in ci ([a56f4e8](https://github.com/JendyJasper/cm-demo/commit/a56f4e853d5373d0df74ab00492510ddea172d0c))
+
 ## [6.0.0](https://github.com/JendyJasper/cm-demo/compare/user-service-v5.1.0...user-service-v6.0.0) (2025-10-07)
 
 
