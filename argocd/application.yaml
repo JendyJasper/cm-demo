@@ -22,6 +22,8 @@ spec:
     - CreateNamespace=true
     - PruneLast=true
     - ApplyOutOfSyncOnly=true
+    - ServerSideApply=true
+    - FailOnSharedResource=false
   ignoreDifferences:
   - group: argoproj.io
     kind: Rollout 
