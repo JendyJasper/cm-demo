@@ -1,0 +1,21 @@
+server:
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hosts:
+      - argocd.local
+    annotations:
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+      nginx.ingress.kubernetes.io/ssl-redirect: "false"
+  extraArgs:
+    - --insecure
+  service:
+    type: ClusterIP
+
+controller:
+  args:
+    appResyncPeriod: 30
+
+configs:
+  params:
+    server.insecure: "true"
