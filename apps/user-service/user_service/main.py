@@ -9,7 +9,6 @@ from pydantic import BaseModel
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Database pool + startup flag
 pool = None
 startup_complete = False
 
