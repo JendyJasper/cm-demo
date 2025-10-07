@@ -43,17 +43,17 @@ async def connect_to_db():
                 )
             ''')
         
-        logger.info("✅ Connected to database and ensured table exists")
+        logger.info("Connected to database and ensured table exists")
         startup_complete = True
     except Exception as e:
-        logger.error(f"❌ Database connection failed: {e}")
+        logger.error(f" Database connection failed: {e}")
         startup_complete = False
 
 async def close_db_connection():
     global pool
     if pool:
         await pool.close()
-        logger.info("✅ Database connection closed")
+        logger.info("Database connection closed")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
