@@ -42,7 +42,7 @@ async def connect_to_db():
                 )
             ''')
         
-        logger.info("Connected to database and ensured table exists")
+        logger.info("Connected to database and ensured table exists!")
         startup_complete = True
     except Exception as e:
         logger.error(f" Database connection failed: {e}")
