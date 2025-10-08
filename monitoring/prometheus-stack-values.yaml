@@ -7,10 +7,9 @@ grafana:
     existingSecret: grafana-admin
     userKey: admin-password
   service:
-    type: NodePort
-    nodePort: 30000
+    type: ClusterIP
   ingress:
-    enabled: true
+    enabled: false
     ingressClassName: nginx
     hosts:
       - grafana.local
@@ -25,10 +24,9 @@ grafana:
 # Prometheus configuration
 prometheus:
   service:
-    type: NodePort
-    nodePort: 30900
+    type: ClusterIP
   ingress:
-    enabled: true
+    enabled: false
     ingressClassName: nginx
     hosts:
       - prometheus.local
@@ -48,10 +46,9 @@ prometheus:
 alertmanager:
   enabled: true
   service:
-    type: NodePort
-    nodePort: 30903
+    type: ClusterIP
   ingress:
-    enabled: true
+    enabled: false
     ingressClassName: nginx
     hosts:
       - alertmanager.local
