@@ -1,0 +1,104 @@
+global:
+  storageClass: standard
+
+# Grafana configuration
+grafana:
+  admin:
+    existingSecret: grafana-admin
+    userKey: admin-password
+  service:
+    type: NodePort
+    nodePort: 30000
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hosts:
+      - grafana.local
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "100m"
+    limits:
+      memory: "256Mi"
+      cpu: "200m"
+
+# Prometheus configuration
+prometheus:
+  service:
+    type: NodePort
+    nodePort: 30900
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hosts:
+      - prometheus.local
+  prometheusSpec:
+    scrapeInterval: 30s
+    evaluationInterval: 30s
+    retention: 24h
+    resources:
+      requests:
+        memory: "512Mi"
+        cpu: "300m"
+      limits:
+        memory: "1Gi"
+        cpu: "500m"
+
+# Alertmanager configuration
+alertmanager:
+  enabled: true
+  service:
+    type: NodePort
+    nodePort: 30903
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hosts:
+      - alertmanager.local
+
+# Disable built-in node-exporter (using custom DaemonSet)
+nodeExporter:
+  enabled: false
+
+# Enable and configure kube-state-metrics
+kubeStateMetrics:
+  enabled: true
+  service:
+    port: 8080
+    targetPort: 8080
+  serviceMonitor:
+    enabled: true
+  resources:
+    requests:
+      memory: "64Mi"
+      cpu: "50m"
+    limits:
+      memory: "128Mi"
+      cpu: "100m"
+
+defaultRules:
+  create: true
+  rules:
+    alertmanager: true
+    etcd: false
+    configReloaders: true
+    general: true
+    k8s: true
+    kubeApiserverAvailability: true
+    kubeApiserverBurnrate: true
+    kubeApiserverHistogram: false
+    kubeApiserverSlos: true
+    kubelet: true
+    kubeProxy: true
+    kubePrometheusGeneral: true
+    kubePrometheusNodeRecording: true
+    kubernetesApps: true
+    kubernetesResources: true
+    kubernetesStorage: true
+    kubernetesSystem: true
+    network: true
+    node: true
+    nodeExporterAlerting: true
+    nodeExporterRecording: true
+    prometheus: true
+    prometheusOperator: true

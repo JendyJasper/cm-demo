@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus-stack
+  namespace: argocd
+  labels:
+    type: infrastructure
+    team: platform
+spec:
+  project: default
+  sources:
+    - repoURL: https://github.com/JendyJasper/cm-demo.git
+      targetRevision: HEAD
+      ref: values
+    - repoURL: https://prometheus-community.github.io/helm-charts
+      chart: kube-prometheus-stack
+      targetRevision: 51.8.0
+      helm:
+        releaseName: prometheus-stack
+        valueFiles:
+          - $values/monitoring/prometheus-stack-values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
