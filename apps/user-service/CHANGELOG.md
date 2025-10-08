@@ -1,3 +1,10 @@
+## [7.0.6](https://github.com/JendyJasper/cm-demo/compare/user-service-v7.0.5...user-service-v7.0.6) (2025-10-08)
+
+
+### Bug Fixes
+
+* update docker file ([19104b4](https://github.com/JendyJasper/cm-demo/commit/19104b4af831a28fe81f6926259a3f74986033da))
+
 ## [7.0.5](https://github.com/JendyJasper/cm-demo/compare/user-service-v7.0.4...user-service-v7.0.5) (2025-10-08)
 
 
