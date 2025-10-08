@@ -1,3 +1,10 @@
+## [7.0.5](https://github.com/JendyJasper/cm-demo/compare/user-service-v7.0.4...user-service-v7.0.5) (2025-10-08)
+
+
+### Bug Fixes
+
+* combine metric and main ([3fb38d1](https://github.com/JendyJasper/cm-demo/commit/3fb38d1e79cc6d9e5e4d491f1f39a977c356f9ff))
+
 ## [7.0.4](https://github.com/JendyJasper/cm-demo/compare/user-service-v7.0.3...user-service-v7.0.4) (2025-10-08)
 
 
