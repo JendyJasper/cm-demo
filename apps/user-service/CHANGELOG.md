@@ -1,3 +1,11 @@
+## [7.0.1](https://github.com/JendyJasper/cm-demo/compare/user-service-v7.0.0...user-service-v7.0.1) (2025-10-08)
+
+
+### Bug Fixes
+
+* use absolute immport for metric ([f93a274](https://github.com/JendyJasper/cm-demo/commit/f93a27442cffc13d77dceb90271242f742b9ec8e))
+* use absolute immport for metrics ([dc64463](https://github.com/JendyJasper/cm-demo/commit/dc6446398a98f45bf7c5526f456bed7923afe6a7))
+
 ## [7.0.0](https://github.com/JendyJasper/cm-demo/compare/user-service-v6.1.0...user-service-v7.0.0) (2025-10-08)
 
 
