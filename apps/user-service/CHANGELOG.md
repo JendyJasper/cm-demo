@@ -1,3 +1,10 @@
+## [7.0.4](https://github.com/JendyJasper/cm-demo/compare/user-service-v7.0.3...user-service-v7.0.4) (2025-10-08)
+
+
+### Bug Fixes
+
+* bug fix ([678a8db](https://github.com/JendyJasper/cm-demo/commit/678a8db31f328dfd2ddb453e47c6a00f2038821e))
+
 ## [7.0.3](https://github.com/JendyJasper/cm-demo/compare/user-service-v7.0.2...user-service-v7.0.3) (2025-10-08)
 
 
