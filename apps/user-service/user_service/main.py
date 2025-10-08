@@ -9,7 +9,7 @@ from prometheus_client import generate_latest, REGISTRY, CONTENT_TYPE_LATEST
 from starlette.responses import Response
 from starlette.middleware.base import BaseHTTPMiddleware
 
-from metrics import (
+from user_service.metrics import (
     record_request_metrics, USER_CREATED, USER_READ, ACTIVE_USERS, 
     DB_CONNECTIONS, DB_ERRORS, APP_HEALTH, MetricsMiddleware
 )
