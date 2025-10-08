@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 import asyncpg
 import os
 import logging
+import time
 from pydantic import BaseModel
 from prometheus_client import generate_latest, REGISTRY, CONTENT_TYPE_LATEST
 from starlette.responses import Response
