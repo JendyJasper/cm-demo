@@ -5,21 +5,37 @@ import os
 import logging
 import time
 from pydantic import BaseModel
-from prometheus_client import generate_latest, REGISTRY, CONTENT_TYPE_LATEST
+from prometheus_client import generate_latest, REGISTRY, CONTENT_TYPE_LATEST, Counter, Histogram, Gauge
 from starlette.responses import Response
 from starlette.middleware.base import BaseHTTPMiddleware
-
-from user_service.metrics import (
-    record_request_metrics, USER_CREATED, USER_READ, ACTIVE_USERS, 
-    DB_CONNECTIONS, DB_ERRORS, APP_HEALTH, MetricsMiddleware
-)
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-pool = None
-startup_complete = False
+# Database metrics
+DB_CONNECTIONS = Gauge('db_connections_active', 'Active database connections')
+DB_ERRORS = Counter('db_errors_total', 'Total database errors', ['error_type'])
+
+# Business metrics
+USER_CREATED = Counter('user_created_total', 'Total users created')
+USER_READ = Counter('user_read_total', 'Total user read operations')
+ACTIVE_USERS = Gauge('active_users_count', 'Number of active users')
+
+# HTTP metrics
+REQUEST_COUNT = Counter(
+    'http_requests_total',
+    'Total HTTP requests',
+    ['method', 'endpoint', 'status_code']
+)
+REQUEST_DURATION = Histogram(
+    'http_request_duration_seconds',
+    'HTTP request duration in seconds',
+    ['method', 'endpoint']
+)
+
+# Application health metrics
+APP_HEALTH = Gauge('app_health_status', 'Application health status (1=healthy, 0=unhealthy)')
 
 class MetricsMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
@@ -34,8 +50,14 @@ class MetricsMiddleware(BaseHTTPMiddleware):
         response = await call_next(request)
         duration = time.time() - start_time
         
-        record_request_metrics(method, endpoint, response.status_code, duration)
+        # Record request metrics
+        REQUEST_COUNT.labels(method=method, endpoint=endpoint, status_code=response.status_code).inc()
+        REQUEST_DURATION.labels(method=method, endpoint=endpoint).observe(duration)
         return response
+
+
+pool = None
+startup_complete = False
 
 async def connect_to_db():
     global pool, startup_complete
