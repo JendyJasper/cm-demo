@@ -10,3 +10,5 @@ data:
   DATABASE_USER: postgres
   ENVIRONMENT: production
   LOG_LEVEL: INFO
+  METRICS_ENABLED: "true"
+  METRICS_PORT: "8000"

@@ -1,0 +1,95 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: user-service-dashboard
+  namespace: monitoring
+  labels:
+    grafana_dashboard: "1"
+data:
+  user-service-dashboard.json: |-
+    {
+      "dashboard": {
+        "id": null,
+        "title": "User Service Dashboard",
+        "tags": ["user-service", "business-metrics"],
+        "timezone": "browser",
+        "panels": [
+          {
+            "id": 1,
+            "title": "HTTP Requests",
+            "type": "stat",
+            "targets": [
+              {
+                "expr": "rate(http_requests_total[5m])",
+                "legendFormat": "{{method}} {{endpoint}}"
+              }
+            ],
+            "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0}
+          },
+          {
+            "id": 2,
+            "title": "Request Duration",
+            "type": "heatmap",
+            "targets": [
+              {
+                "expr": "histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))",
+                "legendFormat": "95th percentile"
+              }
+            ],
+            "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0}
+          },
+          {
+            "id": 3,
+            "title": "Users Created",
+            "type": "graph",
+            "targets": [
+              {
+                "expr": "rate(user_created_total[5m])",
+                "legendFormat": "Users created"
+              }
+            ],
+            "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8}
+          },
+          {
+            "id": 4,
+            "title": "Active Users",
+            "type": "stat",
+            "targets": [
+              {
+                "expr": "active_users_count",
+                "legendFormat": "Active users"
+              }
+            ],
+            "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8}
+          },
+          {
+            "id": 5,
+            "title": "Database Connections",
+            "type": "gauge",
+            "targets": [
+              {
+                "expr": "db_connections_active",
+                "legendFormat": "Active connections"
+              }
+            ],
+            "gridPos": {"h": 8, "w": 8, "x": 0, "y": 16}
+          },
+          {
+            "id": 6,
+            "title": "Database Errors",
+            "type": "graph",
+            "targets": [
+              {
+                "expr": "rate(db_errors_total[5m])",
+                "legendFormat": "{{error_type}}"
+              }
+            ],
+            "gridPos": {"h": 8, "w": 16, "x": 8, "y": 16}
+          }
+        ],
+        "time": {
+          "from": "now-1h",
+          "to": "now"
+        }
+      }
+    }

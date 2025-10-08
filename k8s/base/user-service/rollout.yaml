@@ -12,10 +12,14 @@ spec:
     metadata:
       labels:
         app: user-service
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8000"
+        prometheus.io/path: "/metrics"
     spec:
       containers:
       - name: user-service
-        image: jendyjasper/user-service:5.1.0
+        image: jendyjasper/user-service:6.2.0  # Updated version
         imagePullPolicy: Always
         ports:
         - containerPort: 8000
@@ -57,6 +61,11 @@ spec:
             configMapKeyRef:
               name: user-service-config
               key: LOG_LEVEL
+        - name: METRICS_ENABLED
+          valueFrom:
+            configMapKeyRef:
+              name: user-service-config
+              key: METRICS_ENABLED
         startupProbe:
           httpGet:
             path: /startup
