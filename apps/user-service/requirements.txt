@@ -19,4 +19,3 @@ safety==3.6.2
 
 # Prometheus metrics
 prometheus-client==0.20.0
-starlette-prometheus==0.10.1
