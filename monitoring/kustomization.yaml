@@ -8,3 +8,4 @@ resources:
 - servicemonitors.yaml
 - namespace.yaml
 - sealed-secret.yaml
+- monitoring-ingress.yaml
