@@ -1,3 +1,11 @@
+## [7.0.7](https://github.com/JendyJasper/cm-demo/compare/user-service-v7.0.6...user-service-v7.0.7) (2025-10-08)
+
+
+### Bug Fixes
+
+* update import path ([48eb591](https://github.com/JendyJasper/cm-demo/commit/48eb591c3356bd4f4f230fcbc9f75255053b2bc7))
+* update import paths ([c20de53](https://github.com/JendyJasper/cm-demo/commit/c20de5360e7ec5e05ae41a6c4311d1855ae1c578))
+
 ## [7.0.6](https://github.com/JendyJasper/cm-demo/compare/user-service-v7.0.5...user-service-v7.0.6) (2025-10-08)
 
 
