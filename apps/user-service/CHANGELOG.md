@@ -1,3 +1,23 @@
+## [7.0.0](https://github.com/JendyJasper/cm-demo/compare/user-service-v6.1.0...user-service-v7.0.0) (2025-10-08)
+
+
+### ⚠ BREAKING CHANGES
+
+* add the  metrics endpoint
+* add metrics endpoint (#49)
+
+### Features
+
+* add metrics endpoint ([#49](https://github.com/JendyJasper/cm-demo/issues/49)) ([edffeac](https://github.com/JendyJasper/cm-demo/commit/edffeac82ef64ada425ee311eda0c26a210d420b))
+* add monitoring ([#47](https://github.com/JendyJasper/cm-demo/issues/47)) ([5898f4e](https://github.com/JendyJasper/cm-demo/commit/5898f4ed1f1d7525336d918ec2508fa7c1595652))
+* add monitoring ingress ([9a5e0de](https://github.com/JendyJasper/cm-demo/commit/9a5e0def5dacffd5bd1a4c87a31eada1b4d56031))
+* add the  metrics endpoint ([20ebf9d](https://github.com/JendyJasper/cm-demo/commit/20ebf9d4b60b425b8f3376154c46efb77f6f4e4b))
+
+
+### Bug Fixes
+
+* Update main.py ([98041e6](https://github.com/JendyJasper/cm-demo/commit/98041e691761d9b940bea2af88efab06c4320164))
+
 ## [6.1.0](https://github.com/JendyJasper/cm-demo/compare/user-service-v6.0.1...user-service-v6.1.0) (2025-10-07)
 
 
