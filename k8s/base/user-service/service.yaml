@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: user-service
   namespace: user-service
+  labels:
+    app: user-service
 spec:
   ports:
   - port: 8000
