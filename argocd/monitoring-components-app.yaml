@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: monitoring-components
+  namespace: argocd
+  labels:
+    type: infrastructure
+    team: platform
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/JendyJasper/cm-demo.git
+    targetRevision: HEAD
+    path: monitoring
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

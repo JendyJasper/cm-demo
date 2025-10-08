@@ -3,6 +3,8 @@ kind: StatefulSet
 metadata:
   name: postgres
   namespace: database
+  labels:
+    app: postgres
 spec:
   serviceName: postgres
   replicas: 1
@@ -48,7 +50,7 @@ spec:
             command:
             - sh
             - -c
-            - exec pg_isready -U postgres -h 127.0.0.1
+            - exec pg_isready -U $POSTGRES_USER -h 127.0.0.1
           initialDelaySeconds: 30
           periodSeconds: 10
           timeoutSeconds: 5
@@ -58,7 +60,7 @@ spec:
             command:
             - sh
             - -c
-            - exec pg_isready -U postgres -h 127.0.0.1
+            - exec pg_isready -U $POSTGRES_USER -h 127.0.0.1
           initialDelaySeconds: 5
           periodSeconds: 5
           timeoutSeconds: 3
@@ -73,6 +75,47 @@ spec:
           runAsNonRoot: true
           runAsUser: 999
           allowPrivilegeEscalation: false
+      
+      # PostgreSQL Exporter Sidecar
+      - name: postgres-exporter
+        image: prometheuscommunity/postgres-exporter:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 9187
+          protocol: TCP
+          name: metrics
+        env:
+        - name: DATA_SOURCE_NAME
+          value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@localhost:5432/$(POSTGRES_DB)?sslmode=disable"
+        envFrom:
+        - secretRef:
+            name: postgres-secret
+        - configMapRef:
+            name: postgres-config
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+        livenessProbe:
+          httpGet:
+            path: /metrics
+            port: 9187
+          initialDelaySeconds: 10
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /metrics
+            port: 9187
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+          allowPrivilegeEscalation: false
+      
       initContainers:
       - name: fix-permissions
         image: postgres:15-alpine
