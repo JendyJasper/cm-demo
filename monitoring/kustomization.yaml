@@ -9,4 +9,3 @@ resources:
 - namespace.yaml
 - sealed-secret.yaml
 - monitoring-ingress.yaml
-- user-service-dashboard.yaml
