@@ -1,38 +1,15 @@
-# monitoring/loki-stack-values-fixed.yaml
 loki:
   enabled: true
-  isDefault: false
   persistence:
     enabled: true
-    size: 1Gi  # Smaller for Kind
+    size: 10Gi
     storageClassName: standard
   config:
+    table_manager:
+      retention_deletes_enabled: true
+      retention_period: 168h
     auth_enabled: false
-    common:
-      replication_factor: 1
-    ingester:
-      chunk_idle_period: 1h
-      max_chunk_age: 1h
-      chunk_target_size: 1048576
-      chunk_retain_period: 30s
-    schema_config:
-      configs:
-      - from: 2020-10-24
-        store: boltdb-shipper
-        object_store: filesystem
-        schema: v11
-        index:
-          prefix: index_
-          period: 24h
-    server:
-      http_listen_port: 3100
-    storage_config:
-      boltdb_shipper:
-        active_index_directory: /loki/boltdb-shipper-active
-        cache_location: /loki/boltdb-shipper-cache
-        shared_store: filesystem
-      filesystem:
-        directory: /loki/chunks
+  fullnameOverride: "loki"
 
 promtail:
   enabled: true
@@ -40,44 +17,24 @@ promtail:
     logLevel: info
     serverPort: 3101
     clients:
-    - url: http://loki:3100/loki/api/v1/push  # Fixed URL
-    snippets:
-      extraScrapeConfigs: |
-        - job_name: kubernetes-pods
-          kubernetes_sd_configs:
-          - role: pod
-          relabel_configs:
-          - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
-            action: keep
-            regex: true
-          - source_labels: [__meta_kubernetes_pod_container_name]
-            action: replace
-            target_label: container
-          - source_labels: [__meta_kubernetes_pod_node_name]
-            action: replace
-            target_label: node
-          - source_labels: [__meta_kubernetes_namespace]
-            action: replace
-            target_label: namespace
-          - source_labels: [__meta_kubernetes_pod_name]
-            action: replace
-            target_label: pod
+    - url: http://loki-stack-gateway.logging.svc.cluster.local/loki/api/v1/push
 
 gateway:
   enabled: true
-  # No nginx needed for basic setup
 
-# Disable components we don't need
-prometheus:
-  enabled: false
 grafana:
   enabled: false
 
-# Resource optimization for Kind cluster
+nginx:
+  enabled: false
+
 resources:
   requests:
-    memory: "64Mi"
-    cpu: "50m"
-  limits:
     memory: "128Mi"
     cpu: "100m"
+  limits:
+    memory: "256Mi"
+    cpu: "200m"
+
+global:
+  imagePullSecrets: []
