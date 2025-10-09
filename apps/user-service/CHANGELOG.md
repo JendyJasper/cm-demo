@@ -1,3 +1,10 @@
+## [7.2.0](https://github.com/JendyJasper/cm-demo/compare/user-service-v7.1.0...user-service-v7.2.0) (2025-10-09)
+
+
+### Features
+
+* add structured log ([a2bdf49](https://github.com/JendyJasper/cm-demo/commit/a2bdf4909159699ba705293718556969ef50d63f))
+
 ## [7.1.0](https://github.com/JendyJasper/cm-demo/compare/user-service-v7.0.7...user-service-v7.1.0) (2025-10-09)
 
 
