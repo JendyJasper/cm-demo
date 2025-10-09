@@ -1,3 +1,10 @@
+## [7.1.0](https://github.com/JendyJasper/cm-demo/compare/user-service-v7.0.7...user-service-v7.1.0) (2025-10-09)
+
+
+### Features
+
+* add loki for log collection ([#50](https://github.com/JendyJasper/cm-demo/issues/50)) ([53f3544](https://github.com/JendyJasper/cm-demo/commit/53f3544ceb84484c1acf7506f3c85903e3dccad2))
+
 ## [7.0.7](https://github.com/JendyJasper/cm-demo/compare/user-service-v7.0.6...user-service-v7.0.7) (2025-10-08)
 
 
