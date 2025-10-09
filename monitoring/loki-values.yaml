@@ -4,12 +4,14 @@ loki:
   storage:
     type: filesystem
     filesystem:
-      directory: /data/loki
+      directory: /var/loki
   persistence:
     enabled: true
-    size: 1Gi
     storageClassName: standard
+    size: 1Gi
   auth_enabled: false
+
+deploymentMode: SingleBinary
 
 service:
   type: ClusterIP
@@ -17,21 +19,8 @@ service:
 
 gateway:
   enabled: true
-  ingress:
-    enabled: false
 
-grafana:
-  enabled: true
-  sidecar:
-    datasources:
-      enabled: true
-      label: grafana_datasource
-      maxLines: 1000
-      searchNamespace: ALL
-  serviceMonitor:
-    enabled: false
-
-# Promtail configuration (send logs to Loki)
+# Promtail setup to push logs
 promtail:
   enabled: true
   config:
@@ -39,3 +28,12 @@ promtail:
     serverPort: 3101
     clients:
       - url: http://loki.logging.svc.cluster.local:3100/loki/api/v1/push
+
+# Grafana datasource auto-registration
+grafana:
+  enabled: true
+  sidecar:
+    datasources:
+      enabled: true
+      label: grafana_datasource
+      searchNamespace: ALL
