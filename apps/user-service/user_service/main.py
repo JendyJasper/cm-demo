@@ -5,61 +5,35 @@ import os
 import logging
 import time
 from pydantic import BaseModel
-from prometheus_client import generate_latest, REGISTRY, CONTENT_TYPE_LATEST
+from prometheus_client import generate_latest, Counter, Gauge, REGISTRY, CONTENT_TYPE_LATEST
 from starlette.responses import Response
-from starlette.middleware.base import BaseHTTPMiddleware
 
-from user_service.metrics import (
-    record_request_metrics, USER_CREATED, USER_READ, ACTIVE_USERS, 
-    DB_CONNECTIONS, DB_ERRORS, APP_HEALTH, MetricsMiddleware
-)
-
-# Configure logging
+# Configure basic logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+# Simple metrics
+REQUEST_COUNT = Counter('http_requests_total', 'Total HTTP requests', ['method', 'endpoint'])
+USER_CREATED = Counter('user_created_total', 'Total users created')
+ACTIVE_USERS = Gauge('active_users_count', 'Number of active users')
+APP_HEALTH = Gauge('app_health_status', 'Application health status')
 
 pool = None
 startup_complete = False
 
-class MetricsMiddleware(BaseHTTPMiddleware):
-    async def dispatch(self, request, call_next):
-        method = request.method
-        endpoint = request.url.path
-        
-        # Skip metrics endpoint to avoid self-measurement
-        if endpoint == '/metrics':
-            return await call_next(request)
-            
-        start_time = time.time()
-        response = await call_next(request)
-        duration = time.time() - start_time
-        
-        record_request_metrics(method, endpoint, response.status_code, duration)
-        return response
-
 async def connect_to_db():
     global pool, startup_complete
     try:
-        # Get database connection details from environment
         db_user = os.getenv("DATABASE_USER", "postgres")
         db_password = os.getenv("DATABASE_PASSWORD", "postgres")
         db_host = os.getenv("DATABASE_HOST", "localhost")
         db_port = os.getenv("DATABASE_PORT", "5432")
         db_name = os.getenv("DATABASE_NAME", "user_service")
         
-        # Construct DATABASE_URL
         database_url = f"postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"
         
-        pool = await asyncpg.create_pool(
-            database_url,
-            min_size=5,
-            max_size=20
-        )
+        pool = await asyncpg.create_pool(database_url, min_size=5, max_size=20)
         
-        # Update metrics
-        DB_CONNECTIONS.set(5)  # min_size
-        
-        # Create users table if it doesn't exist
         async with pool.acquire() as conn:
             await conn.execute('''
                 CREATE TABLE IF NOT EXISTS users (
@@ -70,7 +44,7 @@ async def connect_to_db():
                 )
             ''')
         
-        logger.info("Connected to database and ensured table exists")
+        logger.info("Connected to database")
         startup_complete = True
         APP_HEALTH.set(1)
         
@@ -78,33 +52,25 @@ async def connect_to_db():
         logger.error(f"Database connection failed: {e}")
         startup_complete = False
         APP_HEALTH.set(0)
-        DB_ERRORS.labels(error_type='connection').inc()
 
 async def close_db_connection():
     global pool
     if pool:
         await pool.close()
         logger.info("Database connection closed")
-        DB_CONNECTIONS.set(0)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup
     await connect_to_db()
     yield
-    # Shutdown
     await close_db_connection()
 
 app = FastAPI(
     title="User Service",
-    description="User management microservice with metrics",
+    description="User management microservice",
     version=os.getenv("VERSION", "1.0.0"),
     lifespan=lifespan
 )
-
-# Add metrics middleware if enabled
-if os.getenv("METRICS_ENABLED", "true").lower() == "true":
-    app.add_middleware(MetricsMiddleware)
 
 # Pydantic models
 class User(BaseModel):
@@ -122,6 +88,7 @@ async def metrics():
 
 @app.get("/")
 async def root():
+    REQUEST_COUNT.labels(method="GET", endpoint="/").inc()
     return {
         "service": "user-service",
         "version": app.version,
@@ -129,27 +96,19 @@ async def root():
         "metrics": "/metrics"
     }
 
-@app.get("/startup")
-async def startup_probe():
-    """Startup probe - checks if app finished initialization"""
-    if startup_complete:
-        return {"status": "ok"}
-    raise HTTPException(status_code=503, detail="Service starting up")
-
 @app.get("/health")
 async def health_check():
-    """Liveness probe"""
+    REQUEST_COUNT.labels(method="GET", endpoint="/health").inc()
     APP_HEALTH.set(1 if startup_complete else 0)
     return {"status": "healthy"}
 
 @app.get("/ready")
 async def readiness_check():
-    """Readiness probe - check DB connection"""
+    REQUEST_COUNT.labels(method="GET", endpoint="/ready").inc()
     try:
         if pool:
             async with pool.acquire() as conn:
                 await conn.execute("SELECT 1")
-            DB_CONNECTIONS.inc()  # Sample connection usage
             return {"status": "ready", "database": "connected"}
         else:
             APP_HEALTH.set(0)
@@ -157,12 +116,11 @@ async def readiness_check():
     except Exception as e:
         logger.error(f"Readiness check failed: {e}")
         APP_HEALTH.set(0)
-        DB_ERRORS.labels(error_type='readiness_check').inc()
         raise HTTPException(status_code=503, detail="Service not ready")
 
 @app.get("/users")
 async def get_users():
-    """Get all users from database"""
+    REQUEST_COUNT.labels(method="GET", endpoint="/users").inc()
     if not pool:
         raise HTTPException(status_code=503, detail="Database not connected")
     
@@ -170,23 +128,20 @@ async def get_users():
         async with pool.acquire() as conn:
             users = await conn.fetch("SELECT id, username, email, created_at FROM users ORDER BY id")
             user_count = len(users)
-            USER_READ.inc(user_count)
             ACTIVE_USERS.set(user_count)
             return {"users": [dict(user) for user in users]}
     except Exception as e:
         logger.error(f"Failed to fetch users: {e}")
-        DB_ERRORS.labels(error_type='query').inc()
         raise HTTPException(status_code=500, detail="Failed to fetch users")
 
 @app.post("/users")
 async def create_user(user: User):
-    """Create a new user in database"""
+    REQUEST_COUNT.labels(method="POST", endpoint="/users").inc()
     if not pool:
         raise HTTPException(status_code=503, detail="Database not connected")
     
     try:
         async with pool.acquire() as conn:
-            # Insert user and return the created record
             result = await conn.fetchrow(
                 "INSERT INTO users (username, email) VALUES ($1, $2) RETURNING id, username, email, created_at",
                 user.username, user.email
@@ -195,16 +150,14 @@ async def create_user(user: User):
             ACTIVE_USERS.inc()
             return {"message": "User created", "user": dict(result)}
     except asyncpg.exceptions.UniqueViolationError:
-        DB_ERRORS.labels(error_type='unique_violation').inc()
         raise HTTPException(status_code=400, detail="Username or email already exists")
     except Exception as e:
         logger.error(f"Failed to create user: {e}")
-        DB_ERRORS.labels(error_type='insert').inc()
         raise HTTPException(status_code=500, detail="Failed to create user")
 
 @app.get("/users/{user_id}")
 async def get_user(user_id: int):
-    """Get a specific user by ID"""
+    REQUEST_COUNT.labels(method="GET", endpoint="/users/{user_id}").inc()
     if not pool:
         raise HTTPException(status_code=503, detail="Database not connected")
     
@@ -216,9 +169,7 @@ async def get_user(user_id: int):
             )
             if not user:
                 raise HTTPException(status_code=404, detail="User not found")
-            USER_READ.inc()
             return dict(user)
     except Exception as e:
         logger.error(f"Failed to fetch user: {e}")
-        DB_ERRORS.labels(error_type='query').inc()
         raise HTTPException(status_code=500, detail="Failed to fetch user")
