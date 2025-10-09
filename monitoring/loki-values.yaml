@@ -3,10 +3,16 @@ loki:
     replication_factor: 1
   storage:
     type: filesystem
+  auth_enabled: false
   singleBinary:
     enabled: true
-    replicas: 1
-  auth_enabled: false
+
+read:
+  enabled: false
+write:
+  enabled: false
+backend:
+  enabled: false
 
 persistence:
   enabled: true
