@@ -1,40 +1,41 @@
 loki:
-  enabled: true
+  commonConfig:
+    replication_factor: 1
+  storage:
+    type: filesystem
+    filesystem:
+      directory: /data/loki
   persistence:
     enabled: true
-    size: 10Gi
+    size: 1Gi
     storageClassName: standard
-  config:
-    table_manager:
-      retention_deletes_enabled: true
-      retention_period: 168h
-    auth_enabled: false
-  fullnameOverride: "loki"
+  auth_enabled: false
 
+service:
+  type: ClusterIP
+  port: 3100
+
+gateway:
+  enabled: true
+  ingress:
+    enabled: false
+
+grafana:
+  enabled: true
+  sidecar:
+    datasources:
+      enabled: true
+      label: grafana_datasource
+      maxLines: 1000
+      searchNamespace: ALL
+  serviceMonitor:
+    enabled: false
+
+# Promtail configuration (send logs to Loki)
 promtail:
   enabled: true
   config:
     logLevel: info
     serverPort: 3101
     clients:
-    - url: http://loki-stack-gateway.logging.svc.cluster.local/loki/api/v1/push
-
-gateway:
-  enabled: true
-
-grafana:
-  enabled: false
-
-nginx:
-  enabled: false
-
-resources:
-  requests:
-    memory: "128Mi"
-    cpu: "100m"
-  limits:
-    memory: "256Mi"
-    cpu: "200m"
-
-global:
-  imagePullSecrets: []
+      - url: http://loki.logging.svc.cluster.local:3100/loki/api/v1/push
