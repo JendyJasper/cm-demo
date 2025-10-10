@@ -30,3 +30,11 @@ spec:
     kind: Rollout 
     jsonPointers:
     - /spec/replicas
+  - group: networking.istio.io
+    kind: VirtualService
+    jsonPointers:
+      - /spec/http/0/route
+  - group: ""
+    kind: Service
+    jsonPointers:
+      - /spec/selector
