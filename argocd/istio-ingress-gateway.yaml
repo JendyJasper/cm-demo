@@ -1,0 +1,47 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: istio-ingress-gateway
+  namespace: argocd
+  labels:
+    type: infrastructure
+    team: platform
+spec:
+  project: default
+  source:
+    repoURL: https://istio-release.storage.googleapis.com/charts
+    chart: gateway
+    targetRevision: 1.23.1
+    helm:
+      releaseName: istio-ingressgateway
+      values: |
+        # All lines below 'values: |' MUST be indented.
+        labels:
+          istio: ingressgateway
+        
+        injectionTemplate: gateway
+        
+        service:
+          type: NodePort
+          ports:
+          - port: 80
+            targetPort: 8080
+            name: http2
+          - port: 443
+            targetPort: 8443
+            name: https
+        
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: istio-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
