@@ -1,3 +1,18 @@
+## [8.0.0](https://github.com/JendyJasper/cm-demo/compare/user-service-v7.2.0...user-service-v8.0.0) (2025-10-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* add security for image, pods
+* add security for image, pods
+* add security for image, pods
+
+### Bug Fixes
+
+* add security for image, pods ([09d8edf](https://github.com/JendyJasper/cm-demo/commit/09d8edfc6f0fb8b94ebf9aa3c59dcb07791c813b))
+* add security for image, pods ([2433f66](https://github.com/JendyJasper/cm-demo/commit/2433f6627f97e9b1e807985f08c3bb1222fe2385))
+* add security for image, pods ([f103ebd](https://github.com/JendyJasper/cm-demo/commit/f103ebd640ac7c1be4b508b26e8769bc8707e0f9))
+
 ## [7.2.0](https://github.com/JendyJasper/cm-demo/compare/user-service-v7.1.0...user-service-v7.2.0) (2025-10-09)
 
 
