@@ -17,8 +17,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: istio-ingressgateway 
-            namespace: istio-system
+            name: istio-ingressgateway.istio-system.svc.cluster.local  
             port:
               number: 80
   tls:
