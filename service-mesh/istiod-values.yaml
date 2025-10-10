@@ -1,5 +1,3 @@
-profile: minimal
-
 meshConfig:
   enableTracing: true
   accessLogFile: /dev/stdout
