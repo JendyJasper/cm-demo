@@ -10,7 +10,7 @@ spec:
   - port: 8000
     targetPort: 8000
     protocol: TCP
-    name: http
+    name: http-web
   selector:
     app: user-service
   type: ClusterIP
@@ -29,7 +29,7 @@ spec:
   - port: 8000
     targetPort: 8000
     protocol: TCP
-    name: http
+    name: http-web
   selector:
     app: user-service
   type: ClusterIP

@@ -20,7 +20,4 @@ spec:
   rules:
     - from:
         - source:
-            namespaces: ["user-service"]
-    - from:
-        - source:
-            namespaces: ["istio-system"] 
+            namespaces: ["user-service", "istio-system"]

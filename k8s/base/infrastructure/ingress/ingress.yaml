@@ -4,7 +4,9 @@ metadata:
   name: user-service-ingress
   namespace: user-service
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/service-upstream: "true"
+    nginx.ingress.kubernetes.io/upstream-vhost: istio-ingressgateway.istio-system.svc.cluster.local
+    
 spec:
   ingressClassName: nginx
   rules:
@@ -15,7 +17,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: istio-ingressgateway  # send traffic to Istio ingress
+            name: istio-ingressgateway 
             namespace: istio-system
             port:
               number: 80

@@ -5,7 +5,7 @@ metadata:
   namespace: user-service
 spec:
   hosts:
-  - "user-service.user-service.svc.cluster.local"
+  - "user-service.local" 
   gateways:
   - user-service-gateway
   http:

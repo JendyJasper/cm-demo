@@ -2,7 +2,7 @@ apiVersion: networking.istio.io/v1beta1
 kind: Gateway
 metadata:
   name: user-service-gateway
-  namespace: user-service
+  namespace: istio-system 
 spec:
   selector:
     istio: ingressgateway
@@ -12,4 +12,4 @@ spec:
       name: http
       protocol: HTTP
     hosts:
-    - "user-service.user-service.svc.cluster.local"
+    - "user-service.local"

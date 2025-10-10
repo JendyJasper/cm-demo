@@ -25,7 +25,7 @@ spec:
         ports:
         - containerPort: 8000
           protocol: TCP
-          name: http
+          name: http-web
         env:
         - name: DATABASE_HOST
           valueFrom:
