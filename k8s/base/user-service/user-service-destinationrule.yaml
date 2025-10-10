@@ -4,7 +4,7 @@ metadata:
   name: user-service-stable
   namespace: user-service
 spec:
-  host: user-service.user-service.svc.cluster.local
+  host: user-service-stable.user-service.svc.cluster.local
   trafficPolicy:
     tls:
       mode: ISTIO_MUTUAL
@@ -36,7 +36,7 @@ metadata:
   name: user-service-canary
   namespace: user-service
 spec:
-  host: user-service.user-service.svc.cluster.local
+  host: user-service-canary.user-service.svc.cluster.local
   trafficPolicy:
     tls:
       mode: ISTIO_MUTUAL
