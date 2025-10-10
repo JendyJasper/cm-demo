@@ -9,4 +9,3 @@ resources:
   - authorizationpolicy.yaml
   - user-service-destinationrule.yaml
   - user-service-virtualservice.yaml
-  - user-service-dummy-svc.yaml
