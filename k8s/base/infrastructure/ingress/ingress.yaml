@@ -4,6 +4,7 @@ metadata:
   name: user-service-ingress
   namespace: istio-system
   annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/service-upstream: "true"
     nginx.ingress.kubernetes.io/upstream-vhost: "$host"
     
