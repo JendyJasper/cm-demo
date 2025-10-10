@@ -4,6 +4,8 @@ kind: Kustomization
 namespace: istio-system
 
 resources:
-- namespace-labels.yaml
 - security-policies.yaml
 - user-service-gateway.yaml
+- user-service-destinationrule.yaml
+- user-service-virtualservice.yaml
+- security/mesh-security.yaml
