@@ -7,3 +7,5 @@ resources:
   - rollout.yaml
   - sealed-secret.yaml
   - authorizationpolicy.yaml
+  - user-service-destinationrule.yaml
+  - user-service-virtualservice.yaml
