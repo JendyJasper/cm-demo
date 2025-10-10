@@ -7,7 +7,7 @@ spec:
   hosts:
   - "user-service.local" 
   gateways:
-  - user-service-gateway
+  - istio-system/user-service-gateway
   http:
   - name: primary
     match:
