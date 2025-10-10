@@ -9,3 +9,4 @@ resources:
   - authorizationpolicy.yaml
   - user-service-destinationrule.yaml
   - user-service-virtualservice.yaml
+  - hpa.yaml

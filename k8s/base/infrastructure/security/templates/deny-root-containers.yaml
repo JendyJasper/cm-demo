@@ -1,0 +1,33 @@
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate
+metadata:
+  name: k8sdenyrootcontainers
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sDenyRootContainers
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package k8sdenyrootcontainers
+
+        violation[{"msg": msg}] {
+          input.review.kind.kind == "Pod"
+          c := input.review.object.spec.containers[_]
+          not c.securityContext.runAsNonRoot
+          msg := sprintf("Container %v must set runAsNonRoot=true", [c.name])
+        }
+---
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sDenyRootContainers
+metadata:
+  name: deny-root-containers
+spec:
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Pod"]
+    namespaces:
+      - user-service
+      - postgresql

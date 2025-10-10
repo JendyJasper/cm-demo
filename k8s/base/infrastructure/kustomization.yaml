@@ -4,3 +4,5 @@ resources:
   - cert-manager
   - ingress
   - storage
+  - security/gatekeeper.yaml
+  - security/templates/deny-root-containers.yaml

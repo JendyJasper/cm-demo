@@ -1,4 +1,3 @@
-# apps/user-service/user_service/main.py
 from fastapi import FastAPI, Depends, HTTPException
 from contextlib import asynccontextmanager
 import asyncpg

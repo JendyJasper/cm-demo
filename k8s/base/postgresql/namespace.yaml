@@ -6,6 +6,7 @@ metadata:
     name: database
     environment: production
     istio-injection: enabled 
+    pod-security.kubernetes.io/enforce: baseline
   annotations:
     networking.istio.io/exportTo: "."
     topology.istio.io/network: kind
