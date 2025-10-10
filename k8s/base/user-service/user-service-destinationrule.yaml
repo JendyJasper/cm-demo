@@ -26,6 +26,8 @@ spec:
   - name: stable
     labels:
       app: user-service
+      version: stable
   - name: canary
     labels:
       app: user-service
+      version: canary

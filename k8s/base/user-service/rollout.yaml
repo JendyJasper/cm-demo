@@ -12,6 +12,7 @@ spec:
     metadata:
       labels:
         app: user-service
+        version: stable
       annotations:
         sidecar.istio.io/inject: "true"
         prometheus.io/scrape: "true"
