@@ -5,7 +5,7 @@ metadata:
   namespace: istio-system
   annotations:
     nginx.ingress.kubernetes.io/service-upstream: "true"
-    nginx.ingress.kubernetes.io/upstream-vhost: "$host"
+    nginx.ingress.kubernetes.io/upstream-vhost: istio-ingressgateway.istio-system.svc.cluster.local
     
 spec:
   ingressClassName: nginx
