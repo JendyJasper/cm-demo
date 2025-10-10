@@ -1,0 +1,61 @@
+profile: minimal
+
+meshConfig:
+  enableTracing: true
+  accessLogFile: /dev/stdout
+  enablePrometheusMerge: true
+  defaultConfig:
+    holdApplicationUntilProxyStarts: true
+    concurrency: 2
+
+pilot:
+  autoscaleEnabled: false
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+  
+  enableProtocolSniffingForOutbound: true
+  enableProtocolSniffingForInbound: true
+
+# Enable ingress gateway for internal traffic
+gateways:
+  istio-ingressgateway:
+    enabled: true
+    name: istio-ingressgateway
+    # Use NodePort for Kind compatibility
+    service:
+      type: NodePort
+      ports:
+      - port: 80
+        targetPort: 8080
+        name: http2
+      - port: 443
+        targetPort: 8443
+        name: https
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        cpu: 200m
+        memory: 256Mi
+
+global:
+  proxy:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        cpu: 200m
+        memory: 128Mi
+
+telemetry:
+  v2:
+    enabled: true
+    prometheus:
+      enabled: true

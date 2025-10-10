@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: service-mesh-config
+  namespace: argocd
+  labels:
+    type: infrastructure
+    team: platform
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/JendyJasper/cm-demo.git
+    targetRevision: HEAD
+    path: service-mesh
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: istio-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

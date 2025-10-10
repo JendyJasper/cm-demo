@@ -1,0 +1,16 @@
+
+# Minimal base configuration for Kind cluster
+global:
+  hub: docker.io/istio
+  tag: 1.20.0
+  proxy:
+    resources:
+      requests:
+        cpu: 10m
+        memory: 64Mi
+      limits:
+        cpu: 200m
+        memory: 256Mi
+
+base:
+  enableCRDTemplates: false

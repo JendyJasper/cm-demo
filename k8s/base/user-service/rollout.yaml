@@ -13,13 +13,14 @@ spec:
       labels:
         app: user-service
       annotations:
+        sidecar.istio.io/inject: "true"
         prometheus.io/scrape: "true"
         prometheus.io/port: "8000"
         prometheus.io/path: "/metrics"
     spec:
       containers:
       - name: user-service
-        image: jendyjasper/user-service:6.2.0  # Updated version
+        image: jendyjasper/user-service:6.2.0
         imagePullPolicy: Always
         ports:
         - containerPort: 8000
@@ -103,6 +104,14 @@ spec:
           allowPrivilegeEscalation: false
   strategy:
     canary:
+      canaryService: user-service-canary
+      stableService: user-service-stable
+      trafficRouting:
+        istio:
+          virtualService:
+            name: user-service
+            routes:
+              - primary
       steps:
       - setWeight: 25
       - pause: {duration: 30}

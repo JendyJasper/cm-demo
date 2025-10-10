@@ -6,3 +6,4 @@ resources:
   - configmap.yaml
   - rollout.yaml
   - sealed-secret.yaml
+  - authorizationpolicy.yaml

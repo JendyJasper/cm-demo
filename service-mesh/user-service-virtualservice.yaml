@@ -1,0 +1,49 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: user-service
+  namespace: user-service
+spec:
+  hosts:
+  - "user-service.user-service.svc.cluster.local"
+  gateways:
+  - user-service-gateway
+  http:
+  - name: primary
+    match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: user-service.user-service.svc.cluster.local
+        subset: stable
+        port:
+          number: 8000
+      weight: 90
+    - destination:
+        host: user-service.user-service.svc.cluster.local
+        subset: canary
+        port:
+          number: 8000
+      weight: 10
+    fault:
+      delay:
+        percentage:
+          value: 5.0
+        fixedDelay: 2s
+    timeout: 30s
+    retries:
+      attempts: 3
+      perTryTimeout: 2s
+    corsPolicy:
+      allowOrigins:
+      - exact: "*"
+      allowMethods:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+      - OPTIONS
+      allowHeaders:
+      - content-type
+      - authorization

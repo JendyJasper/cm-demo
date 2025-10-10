@@ -1,0 +1,127 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: user-service-alerts
+  namespace: monitoring
+  labels:
+    app: user-service
+    release: prometheus-stack
+spec:
+  groups:
+  - name: user-service
+    rules:
+    # Business Logic Alerts
+    - alert: UserServiceHighErrorRate
+      expr: |
+        (
+          sum(rate(http_requests_total{job="user-service", status_code=~"5.."}[5m])) 
+          / 
+          sum(rate(http_requests_total{job="user-service"}[5m]))
+        ) > 0.05
+      for: 2m
+      labels:
+        severity: warning
+        service: user-service
+        type: business
+      annotations:
+        summary: "High error rate detected in user service"
+        description: "User service has error rate above 5% for the last 2 minutes (current: {{ $value | humanizePercentage }})"
+        runbook_url: "https://github.com/JendyJasper/cm-demo/wiki/User-Service-Runbook#high-error-rate"
+        
+    - alert: UserServiceNoNewUsers
+      expr: |
+        rate(user_created_total{job="user-service"}[1h]) == 0
+      for: 1h
+      labels:
+        severity: info
+        service: user-service
+        type: business
+      annotations:
+        summary: "No new users created in the last hour"
+        description: "User service has not created any new users for 1 hour"
+        runbook_url: "https://github.com/JendyJasper/cm-demo/wiki/User-Service-Runbook#no-new-users"
+    
+    # Performance Alerts
+    - alert: UserServiceHighLatency
+      expr: |
+        histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{job="user-service"}[5m])) > 1
+      for: 3m
+      labels:
+        severity: warning
+        service: user-service
+        type: performance
+      annotations:
+        summary: "High latency detected in user service"
+        description: "User service 95th percentile latency is above 1 second for 3 minutes (current: {{ $value }}s)"
+        runbook_url: "https://github.com/JendyJasper/cm-demo/wiki/User-Service-Runbook#high-latency"
+    
+    - alert: UserServiceThroughputDrop
+      expr: |
+        (avg(rate(http_requests_total{job="user-service"}[10m])) / avg(rate(http_requests_total{job="user-service"}[60m]))) < 0.5
+      for: 5m
+      labels:
+        severity: warning
+        service: user-service
+        type: performance
+      annotations:
+        summary: "Significant throughput drop detected"
+        description: "User service request rate dropped by more than 50% compared to historical average"
+        runbook_url: "https://github.com/JendyJasper/cm-demo/wiki/User-Service-Runbook#throughput-drop"
+    
+    # Infrastructure Alerts
+    - alert: UserServiceDown
+      expr: |
+        up{job="user-service"} == 0
+      for: 1m
+      labels:
+        severity: critical
+        service: user-service
+        type: infrastructure
+      annotations:
+        summary: "User service is down"
+        description: "User service has been down for more than 1 minute"
+        runbook_url: "https://github.com/JendyJasper/cm-demo/wiki/User-Service-Runbook#service-down"
+    
+    - alert: UserServiceDatabaseConnectionIssues
+      expr: |
+        rate(db_errors_total{job="user-service"}[5m]) > 0
+      for: 2m
+      labels:
+        severity: critical
+        service: user-service
+        type: infrastructure
+      annotations:
+        summary: "Database connection issues in user service"
+        description: "User service is experiencing database errors"
+        runbook_url: "https://github.com/JendyJasper/cm-demo/wiki/User-Service-Runbook#database-issues"
+    
+    - alert: UserServiceHighMemoryUsage
+      expr: |
+        container_memory_usage_bytes{container="user-service", namespace="user-service"} > 200 * 1024 * 1024  # 200MB
+      for: 2m
+      labels:
+        severity: warning
+        service: user-service
+        type: infrastructure
+      annotations:
+        summary: "User service using high memory"
+        description: "User service memory usage is above 200MB (current: {{ $value | humanize }} bytes)"
+        runbook_url: "https://github.com/JendyJasper/cm-demo/wiki/User-Service-Runbook#high-memory"
+    
+    # SLO-Based Alerts
+    - alert: UserServiceSLOErrorBudgetBurn
+      expr: |
+        (
+          sum(rate(http_requests_total{job="user-service", status_code=~"5.."}[1h]))
+          / 
+          sum(rate(http_requests_total{job="user-service"}[1h]))
+        ) > 0.01  # 99% SLO
+      for: 5m
+      labels:
+        severity: critical
+        service: user-service
+        type: slo
+      annotations:
+        summary: "User service SLO error budget burning fast"
+        description: "User service error rate exceeds SLO threshold of 1% for 5 minutes"
+        runbook_url: "https://github.com/JendyJasper/cm-demo/wiki/User-Service-Runbook#slo-burn"

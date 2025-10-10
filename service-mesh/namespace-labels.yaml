@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: user-service
+  labels:
+    istio-injection: enabled
+    istio.io/rev: ""
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: database
+  labels:
+    istio-injection: enabled
+    istio.io/rev: ""

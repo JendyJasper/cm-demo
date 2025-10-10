@@ -5,3 +5,7 @@ metadata:
   labels:
     name: user-service
     environment: production
+    istio-injection: enabled
+  annotations:
+    networking.istio.io/exportTo: "."
+    topology.istio.io/network: kind

@@ -1,7 +1,26 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: user-service
+  name: user-service-stable
+  namespace: user-service
+  labels:
+    app: user-service
+spec:
+  ports:
+  - port: 8000
+    targetPort: 8000
+    protocol: TCP
+    name: http
+  selector:
+    app: user-service
+  type: ClusterIP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-service-canary
   namespace: user-service
   labels:
     app: user-service

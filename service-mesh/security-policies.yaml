@@ -1,0 +1,26 @@
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: default-mtls
+  namespace: istio-system
+spec:
+  mtls:
+    mode: PERMISSIVE
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: default-allow-same-ns
+  namespace: user-service
+spec:
+  selector:
+    matchLabels:
+      app: user-service
+  action: ALLOW
+  rules:
+    - from:
+        - source:
+            namespaces: ["user-service"]
+    - from:
+        - source:
+            namespaces: ["istio-system"] 

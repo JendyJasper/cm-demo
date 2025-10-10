@@ -1,7 +1,11 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: database
+  name: user-service
   labels:
-    name: database
+    name: user-service
     environment: production
+    istio-injection: enabled 
+  annotations:
+    networking.istio.io/exportTo: "."
+    topology.istio.io/network: kind

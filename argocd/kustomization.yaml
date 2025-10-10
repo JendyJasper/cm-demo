@@ -1,12 +1,15 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: argocd
+namespace: istio-system
 
 resources:
-  - https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-  - ingress.yaml
-  - application.yaml
+  - namespace-labels.yaml
+  - security-policies.yaml
+  - security/mesh-security.yaml
 
-commonLabels:
-  app.kubernetes.io/part-of: argocd-platform
+  - user-service-gateway.yaml
+
+  - user-service-virtualservice.yaml
+
+  - user-service-destinationrule.yaml

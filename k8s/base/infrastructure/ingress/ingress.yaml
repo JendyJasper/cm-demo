@@ -15,9 +15,10 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: user-service
+            name: istio-ingressgateway  # send traffic to Istio ingress
+            namespace: istio-system
             port:
-              number: 8000
+              number: 80
   tls:
   - hosts:
     - user-service.local
