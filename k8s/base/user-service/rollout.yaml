@@ -17,6 +17,7 @@ spec:
         prometheus.io/scrape: "true"
         prometheus.io/port: "8000"
         prometheus.io/path: "/metrics"
+        sidecar.istio.io/rewriteAppProbes: "false"
     spec:
       containers:
       - name: user-service
