@@ -44,7 +44,6 @@ class StructuredLogger:
         handler.setFormatter(JsonFormatter())
         self.logger.addHandler(handler)
     
-    
     def _log_with_extra(self, level, message, **kwargs):
         extra_fields = {**kwargs}
         

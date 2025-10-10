@@ -89,7 +89,7 @@ jobs:
 
       - name: Scan Docker Image with Trivy
         if: steps.release.outputs.new_release_published == 'true'
-        uses: aquasecurity/trivy-action@v0.33.1
+        uses: aquasecurity/trivy-action@0.33.1
         with:
           image-ref: ${{ secrets.DOCKERHUB_USERNAME }}/user-service:${{ steps.release.outputs.new_release_version }}
           format: 'table'
