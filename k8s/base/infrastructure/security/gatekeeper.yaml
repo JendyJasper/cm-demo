@@ -1,2 +1,0 @@
-resources:
-  - https://raw.githubusercontent.com/open-policy-agent/gatekeeper/release-3.16/deploy/gatekeeper.yaml
