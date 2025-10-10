@@ -18,6 +18,8 @@ pilot:
   
   enableProtocolSniffingForOutbound: true
   enableProtocolSniffingForInbound: true
+  resource_limits_env: false 
+
 
 # Enable ingress gateway for internal traffic
 gateways:

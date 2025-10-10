@@ -29,3 +29,9 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
+  spec:
+  ignoreDifferences:
+    - group: admissionregistration.k8s.io
+      kind: ValidatingWebhookConfiguration
+      jsonPointers:
+        - /webhooks/0/failurePolicy 
