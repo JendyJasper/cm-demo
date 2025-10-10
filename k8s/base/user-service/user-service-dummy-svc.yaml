@@ -4,6 +4,8 @@ metadata:
   name: user-service
   namespace: user-service
 spec:
+  selector:
+    app: user-service 
   ports:
   - name: http-8000
     port: 8000
