@@ -33,4 +33,15 @@ spec:
     - group: admissionregistration.k8s.io
       kind: ValidatingWebhookConfiguration
       jsonPointers:
-        - /webhooks/0/failurePolicy
+        - /webhooks/0/failurePolicy.
+    - group: apps
+      kind: Deployment
+      name: istiod
+      namespace: istio-system
+      jsonPointers:
+        - /spec/template/spec/containers/0/env
+    - group: admissionregistration.k8s.io
+      kind: ValidatingWebhookConfiguration
+      name: istio-validator-istio-system
+      jsonPointers:
+        - /webhooks/0/failurePolicy 

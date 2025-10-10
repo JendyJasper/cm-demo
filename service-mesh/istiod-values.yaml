@@ -25,25 +25,8 @@ pilot:
 # Enable ingress gateway for internal traffic
 gateways:
   istio-ingressgateway:
-    enabled: true
-    name: istio-ingressgateway
-    # Use NodePort for Kind compatibility
-    service:
-      type: NodePort
-      ports:
-      - port: 80
-        targetPort: 8080
-        name: http2
-      - port: 443
-        targetPort: 8443
-        name: https
-    resources:
-      requests:
-        cpu: 50m
-        memory: 128Mi
-      limits:
-        cpu: 200m
-        memory: 256Mi
+    enabled: false
+
 
 global:
   proxy:
