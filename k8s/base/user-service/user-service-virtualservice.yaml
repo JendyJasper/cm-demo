@@ -15,13 +15,13 @@ spec:
         prefix: /
     route:
     - destination:
-        host: user-service.user-service.svc.cluster.local
+        host: user-service-stable.user-service.svc.cluster.local
         subset: stable
         port:
           number: 8000
       weight: 90
     - destination:
-        host: user-service.user-service.svc.cluster.local
+        host: user-service-canary.user-service.svc.cluster.local
         subset: canary
         port:
           number: 8000
