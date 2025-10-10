@@ -17,28 +17,3 @@ metadata:
 spec:
   mtls:
     mode: STRICT
----
-# Allow control plane components (istiod, telemetry, ingress) to talk to workloads
-apiVersion: security.istio.io/v1beta1
-kind: AuthorizationPolicy
-metadata:
-  name: allow-istio-control-plane
-  namespace: user-service
-spec:
-  action: ALLOW
-  rules:
-    - from:
-        - source:
-            namespaces: ["istio-system"]
----
-apiVersion: security.istio.io/v1beta1
-kind: AuthorizationPolicy
-metadata:
-  name: allow-istio-control-plane
-  namespace: database
-spec:
-  action: ALLOW
-  rules:
-    - from:
-        - source:
-            namespaces: ["istio-system"]
