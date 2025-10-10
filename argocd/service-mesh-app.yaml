@@ -14,10 +14,7 @@ spec:
     path: service-mesh
   destination:
     server: https://kubernetes.default.svc
-    namespace: istio-system
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-    - CreateNamespace=true

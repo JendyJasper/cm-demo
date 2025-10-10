@@ -7,13 +7,3 @@ metadata:
 spec:
   mtls:
     mode: PERMISSIVE
----
-#Enforce STRICT mTLS for database namespace
-apiVersion: security.istio.io/v1beta1
-kind: PeerAuthentication
-metadata:
-  name: strict-db-traffic
-  namespace: database
-spec:
-  mtls:
-    mode: STRICT
