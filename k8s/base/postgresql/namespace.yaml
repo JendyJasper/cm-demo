@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: user-service
+  name: database
   labels:
-    name: user-service
+    name: database
     environment: production
     istio-injection: enabled 
   annotations:
