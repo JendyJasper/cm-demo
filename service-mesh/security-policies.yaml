@@ -6,18 +6,3 @@ metadata:
 spec:
   mtls:
     mode: PERMISSIVE
----
-apiVersion: security.istio.io/v1beta1
-kind: AuthorizationPolicy
-metadata:
-  name: default-allow-same-ns
-  namespace: user-service
-spec:
-  selector:
-    matchLabels:
-      app: user-service
-  action: ALLOW
-  rules:
-    - from:
-        - source:
-            namespaces: ["user-service", "istio-system"]
