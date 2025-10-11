@@ -33,7 +33,7 @@ spec:
 apiVersion: networking.istio.io/v1beta1
 kind: DestinationRule
 metadata:
-  name: user-service
+  name: user-service-canary
   namespace: user-service
 spec:
   host: user-service-canary.user-service.svc.cluster.local
