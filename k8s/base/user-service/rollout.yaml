@@ -12,7 +12,6 @@ spec:
     metadata:
       labels:
         app: user-service
-        version: stable
       annotations:
         sidecar.istio.io/inject: "true"
         prometheus.io/scrape: "true"
@@ -106,6 +105,12 @@ spec:
           allowPrivilegeEscalation: false
   strategy:
     canary:
+      stableMetadata:
+        labels:
+          version: stable
+      canaryMetadata:
+        labels:
+          version: canary
       canaryService: user-service-canary
       stableService: user-service-stable
       trafficRouting:
